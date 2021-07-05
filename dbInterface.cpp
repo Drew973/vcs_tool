@@ -19,14 +19,14 @@ bool createNewDb(QSqlDatabase db)
         }
 
     QString initSectionsQuery = "create table if not exists sections(\
-            number int primary key\
+            section_number int primary key not null\
             ,project text\
             ,direction text\
             ,job_no text\
             ,date text\
             ,client text\
             ,contractor text\
-            ,label text\
+            ,label text unique not null\
             ,surveyor text\
             ,weather text\
             ,start_lon float\
@@ -36,6 +36,7 @@ bool createNewDb(QSqlDatabase db)
             ,length_surveyed float\
             ,photo_folder text)";
 
+//section_label is also unique and could be pk
 
     QSqlQuery q(db);
 
@@ -47,16 +48,17 @@ bool createNewDb(QSqlDatabase db)
 
 
     QString initFeaturesQuery = "create table features(\
-        lane text\
+        pk INTEGER PRIMARY KEY not null--huge bug in sqlite. primary key can all be null. Should autoincrement\
+        ,lane text\
         ,s_ch float\
         ,e_ch float\
         ,width float\
         ,feature text\
         ,location text\
         ,photo text\
-        ,section_number int\
+        ,section_label text\
         ,photo_number int\
-        ,foreign key(section_number) references sections(number))";
+        ,foreign key(section_label) references sections(label))";
 
     if( not q.exec(initFeaturesQuery))
         {
