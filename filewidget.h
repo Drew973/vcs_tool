@@ -13,7 +13,7 @@ class fileWidget : public QWidget
     Q_OBJECT
 
 public:
-    explicit fileWidget(QWidget *parent = nullptr);
+    explicit fileWidget(QWidget *parent = nullptr,QString filter="");
     QString currentFile();
 
 public slots:

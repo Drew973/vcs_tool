@@ -1,9 +1,7 @@
 #include "vcs_tool.h"
 #include "ui_vcs_tool.h"
 #include "dbInterface.h"
-#include "comboboxdelegate.h"
-#include "filewidgetdelegate.h"
-
+#include "addfeaturedialog.h"
 
 #include <QFileDialog>
 #include <QString>
@@ -14,9 +12,7 @@
 #include <QStringList>
 
 
-const QStringList defects = { "HRA", "TSSC", "HFSC", "I(G)","I(MH)", "J","Trench Failure","FT","SD(1)","SD(2)","PF","CZ(1)","CZ(2)","POT","LJ(O)","MJ","PJ","LOOPS","PA","CR(1)","CR(2)","TC(1)","TC(2)"};
-const QStringList lanes =  { "CL1", "CL2", "CL3", "CL1&CL2","CL2&CL3", "CL1&CL2&CL3"};
-const QStringList locations =  { "F", "L", "R", "N"};
+#include "addfeaturedialog.h"
 
 
 vcsTool::vcsTool(QWidget *parent)
@@ -40,7 +36,6 @@ vcsTool::vcsTool(QWidget *parent)
     QAction *addFeatAct = new QAction("&Add Feature", this);
     featuresMenu->addAction(addFeatAct);
     connect(addFeatAct, &QAction::triggered, this, &vcsTool::addFeature);
-
 
 }
 
@@ -80,28 +75,14 @@ bool vcsTool::connectToDb(QSqlDatabase db)
         featuresModel->select();
         ui->featuresView->setModel(featuresModel);
 
-
         //hidden columns
         ui->featuresView->setColumnHidden(featuresModel->fieldIndex("section_label"),true);
         ui->featuresView->setColumnHidden(featuresModel->fieldIndex("pk"),true);
 
-
         //delegates
-        comboboxDelegate * laneDelegate = new comboboxDelegate(ui->featuresView);
-        laneDelegate->setItems(lanes);
         ui->featuresView->setItemDelegateForColumn(featuresModel->fieldIndex("lane"), laneDelegate);
-
-        comboboxDelegate * defectDelegate = new comboboxDelegate(ui->featuresView);
-        defectDelegate->setItems(defects);
         ui->featuresView->setItemDelegateForColumn(featuresModel->fieldIndex("feature"), defectDelegate);
-
-        comboboxDelegate * locationDelegate = new comboboxDelegate(ui->featuresView);
-        locationDelegate->setItems(locations);
         ui->featuresView->setItemDelegateForColumn(featuresModel->fieldIndex("location"), locationDelegate);
-
-
-        fileWidgetDelegate * photoDelegate = new fileWidgetDelegate(ui->featuresView);
-        photoDelegate->setFilter("Images (*.png *.bmp *.jpg)");
         ui->featuresView->setItemDelegateForColumn(featuresModel->fieldIndex("photo"), photoDelegate);
 
         //sections
@@ -114,12 +95,9 @@ bool vcsTool::connectToDb(QSqlDatabase db)
 
         sectionsModel->select();//this will trigger setSec? before featuresModel set?
 
-
         this->setWindowTitle(db.databaseName()+" - VCS tool");
         return true;
     }
-
-
 
 
 void vcsTool::newDb()
@@ -160,7 +138,13 @@ void vcsTool::newDb()
     bool vcsTool::addFeature()
     {
        qDebug() << "Add Feature";
+       addFeatureDialog * afd =new addFeatureDialog(this,laneDelegate,defectDelegate,locationDelegate,photoDelegate);
+       connect(ui->secBox, &QComboBox::currentTextChanged, afd, &addFeatureDialog::setSec);
+
+
+       afd->show();
        return true;
+       //if   (ui->featuresView->model()){fe->select()}
     }
 
 

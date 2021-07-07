@@ -11,7 +11,7 @@
 class fileWidgetDelegate : public QStyledItemDelegate
 {
 public:
-    explicit fileWidgetDelegate(QObject *parent = nullptr);
+    explicit fileWidgetDelegate(QObject *parent = nullptr,QString filter="");
 
     QWidget *createEditor(QWidget *parent, const QStyleOptionViewItem &option,const QModelIndex &index) const override;
 

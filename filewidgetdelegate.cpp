@@ -2,9 +2,9 @@
 #include "filewidget.h"
 
 
-fileWidgetDelegate::fileWidgetDelegate(QObject *parent) : QStyledItemDelegate(parent)
+fileWidgetDelegate::fileWidgetDelegate(QObject *parent,QString filter) : QStyledItemDelegate(parent)
 {
-
+    if (not filter.isEmpty()){setFilter(filter);}
 }
 
 

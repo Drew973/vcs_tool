@@ -7,7 +7,7 @@
 #include <QFileDialog>
 
 
-fileWidget::fileWidget(QWidget *parent) : QWidget(parent)
+fileWidget::fileWidget(QWidget *parent,QString filter) : QWidget(parent)
 {
     setLayout(new QHBoxLayout(this));
 
@@ -20,6 +20,7 @@ fileWidget::fileWidget(QWidget *parent) : QWidget(parent)
 
     connect(browseButton, &QPushButton::pressed, this,&fileWidget::browse);
 
+    if (not filter.isEmpty()){setFilter(filter);}
   //  setTextEditable(false);
    // setFilter("Images (*.png *.bmp *.jpg)");
 }
