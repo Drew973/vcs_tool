@@ -53,3 +53,11 @@ void fileWidget::browse()
             edit->setText(f);
         }
     }
+
+
+void fileWidget::setText(QString text)
+{
+    edit->setText(text);
+}
+
+

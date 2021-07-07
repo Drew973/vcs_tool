@@ -17,9 +17,10 @@ public:
     QString currentFile();
 
 public slots:
-        void setFilter(QString);
+        void setFilter(QString filter);
         void browse();
         void setTextEditable(bool editable);//sets if text can be edited through text edit. If not currentFile will be "" or an existing file
+        void setText(QString text);
 
 signals:
 

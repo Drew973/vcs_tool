@@ -48,9 +48,6 @@
           </property>
          </widget>
         </item>
-        <item>
-         <widget class="fileWidget" name="fileWidgetTest" native="true"/>
-        </item>
        </layout>
       </widget>
       <widget class="QWidget" name="tab_2">
@@ -96,14 +93,6 @@
    </property>
   </action>
  </widget>
- <customwidgets>
-  <customwidget>
-   <class>fileWidget</class>
-   <extends>QWidget</extends>
-   <header>filewidget.h</header>
-   <container>1</container>
-  </customwidget>
- </customwidgets>
  <resources/>
  <connections>
   <connection>

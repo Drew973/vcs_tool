@@ -6,7 +6,6 @@
 
 comboboxDelegate::comboboxDelegate(QObject *parent) : QStyledItemDelegate(parent)
 {
-    qDebug() << "created";
 }
 
 
