@@ -9,17 +9,26 @@ CONFIG += c++11
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
+    addfeaturedialog.cpp \
+    comboboxdelegate.cpp \
     dbInterface.cpp \
+    filewidget.cpp \
+    filewidgetdelegate.cpp \
     insertableproxymodel.cpp \
     main.cpp \
     vcs_tool.cpp
 
 HEADERS += \
+    addfeaturedialog.h \
+    comboboxdelegate.h \
     dbInterface.h \
+    filewidget.h \
+    filewidgetdelegate.h \
     insertableproxymodel.h \
     vcs_tool.h
 
 FORMS += \
+    addfeaturedialog.ui \
     vcs_tool.ui
 
 # Default rules for deployment.

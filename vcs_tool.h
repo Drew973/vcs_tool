@@ -30,7 +30,7 @@ class vcsTool : public QMainWindow
         void newDb();
         bool connectToDb(QSqlDatabase db);
         void setSec(int index);
-
+        bool addFeature();
 
     private:
         Ui::vcsTool *ui;

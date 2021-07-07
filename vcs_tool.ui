@@ -48,6 +48,9 @@
           </property>
          </widget>
         </item>
+        <item>
+         <widget class="fileWidget" name="fileWidgetTest" native="true"/>
+        </item>
        </layout>
       </widget>
       <widget class="QWidget" name="tab_2">
@@ -70,7 +73,37 @@
    </property>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
+  <action name="newAct">
+   <property name="text">
+    <string>New...</string>
+   </property>
+   <property name="toolTip">
+    <string>Create new .db file</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+N</string>
+   </property>
+  </action>
+  <action name="openAct">
+   <property name="text">
+    <string>Open...</string>
+   </property>
+   <property name="toolTip">
+    <string>Open .db file</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+O</string>
+   </property>
+  </action>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>fileWidget</class>
+   <extends>QWidget</extends>
+   <header>filewidget.h</header>
+   <container>1</container>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections>
   <connection>
