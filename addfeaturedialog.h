@@ -4,6 +4,9 @@
 #include <QDialog>
 #include <QStandardItemModel>
 #include <QAbstractItemDelegate>
+#include <QSqlDatabase>
+#include <QVariant>
+
 
 
 namespace Ui {
@@ -15,7 +18,7 @@ class addFeatureDialog : public QDialog
     Q_OBJECT
 
 public:
-    explicit addFeatureDialog(QWidget *parent=nullptr,QAbstractItemDelegate * laneDelegate=nullptr,QAbstractItemDelegate * featureDelegate=nullptr,
+    explicit addFeatureDialog(QWidget *parent=nullptr,QSqlDatabase db=QSqlDatabase(),QAbstractItemDelegate * laneDelegate=nullptr,QAbstractItemDelegate * featureDelegate=nullptr,
                               QAbstractItemDelegate * locationDelegate=nullptr,QAbstractItemDelegate * photoDelegate=nullptr);
     ~addFeatureDialog();
 
@@ -26,11 +29,16 @@ public:
 
     public slots:
         void setSec(QString label);
+        void setDatabase(QSqlDatabase database);
+        void add();
+
 
 
 private:
     Ui::addFeatureDialog *ui;
     QString sec;
+    QSqlDatabase db;
+    QVariant d(int i);
 
 };
 

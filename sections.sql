@@ -1,4 +1,5 @@
-create table if not exists sections(
+create table if not exists sections
+(
             number int
             ,project text
             ,direction text
@@ -14,7 +15,7 @@ create table if not exists sections(
             ,end_lon float
             ,end_lat float
             ,length_surveyed float
-            ,photo_folder text)
+)
 
 
 

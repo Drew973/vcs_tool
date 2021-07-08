@@ -25,24 +25,36 @@ class vcsTool : public QMainWindow
     public:
         vcsTool(QWidget *parent = nullptr);
         ~vcsTool();
-        QSqlTableModel * sectionsModel;
-        QSqlTableModel * featuresModel;
-     //   QSqlDatabase db;
-        int testInt;
+        QSqlTableModel * sectionsModel=nullptr;
+        QSqlTableModel * featuresModel=nullptr;
 
         comboboxDelegate * laneDelegate = new comboboxDelegate(this,lanes);
         comboboxDelegate * defectDelegate = new comboboxDelegate(this,defects);
         comboboxDelegate * locationDelegate = new comboboxDelegate(this,locations);
         fileWidgetDelegate * photoDelegate = new fileWidgetDelegate(this,"Images (*.png *.bmp *.jpg)");
 
+
     public slots:
-        void openDb();
-        void newDb();
-        bool connectToDb(QSqlDatabase db);
+        void openDb();//handles open database... action.
+        void newDb();//handles new database... action. create new.db then connect models to it.
+
+
+        void setDataBase(QSqlDatabase dataBase);//open dataBase. set db to this.
+
+        void connectSectionsModel();//warning if table doesn't exist
+        void connectFeaturesModel();//warning if table doesn't exist
+
         void setSec(int index);
-        bool addFeature();
+        void addFeature();//show addFeatureDialog
 
     private:
         Ui::vcsTool *ui;
+        QSqlDatabase db =QSqlDatabase();//test if connected with .isOpen(). test if set with .isValid().
 };
 #endif // VCSTOOL_H
+
+
+/*
+QSqlQuery requires QSqlDatabase
+ */
+

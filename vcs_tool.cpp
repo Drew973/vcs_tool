@@ -49,78 +49,44 @@ vcsTool::~vcsTool()
 
 void vcsTool::openDb()
 {
-    QString fileName = QFileDialog::getOpenFileName(this,tr("Open .db file"), QString(),"sqlite Files (*.db)");
-    QSqlDatabase db = QSqlDatabase::addDatabase("QSQLITE");
-    db.setDatabaseName(fileName);
-    connectToDb(db);
+    QString fileName = QFileDialog::getOpenFileName(this,tr("Open .db file"), QString(),"sqlite File (*.db)");
+
+    if (not fileName.isEmpty() )
+    {
+        QSqlDatabase dataBase = QSqlDatabase::addDatabase("QSQLITE");
+        dataBase.setDatabaseName(fileName);
+        setDataBase(dataBase);
+        connectSectionsModel();
+        connectFeaturesModel();
+    }
 }
 
 
-bool vcsTool::connectToDb(QSqlDatabase db)
-    {
-    this->setWindowTitle("not connected - VCS tool");
-
-    if (not db.isOpen())
-        {
-         if (not db.open())
-            {
-             qDebug() << "database failed to open:";
-             return false;
-            }
-        }
-
-        //features
-        featuresModel = new QSqlTableModel(this,db);
-        featuresModel->setTable("features");//
-        featuresModel->select();
-        ui->featuresView->setModel(featuresModel);
-
-        //hidden columns
-        ui->featuresView->setColumnHidden(featuresModel->fieldIndex("section_label"),true);
-        ui->featuresView->setColumnHidden(featuresModel->fieldIndex("pk"),true);
-
-        //delegates
-        ui->featuresView->setItemDelegateForColumn(featuresModel->fieldIndex("lane"), laneDelegate);
-        ui->featuresView->setItemDelegateForColumn(featuresModel->fieldIndex("feature"), defectDelegate);
-        ui->featuresView->setItemDelegateForColumn(featuresModel->fieldIndex("location"), locationDelegate);
-        ui->featuresView->setItemDelegateForColumn(featuresModel->fieldIndex("photo"), photoDelegate);
-
-        //sections
-        sectionsModel = new QSqlTableModel(this,db);
-        sectionsModel->setTable("sections");
-        ui->sectionsView->setModel(sectionsModel);
-
-        ui->secBox->setModel(sectionsModel);
-        ui->secBox->setModelColumn(sectionsModel->fieldIndex("label"));
-
-        sectionsModel->select();//this will trigger setSec? before featuresModel set?
-
-        this->setWindowTitle(db.databaseName()+" - VCS tool");
-        return true;
-    }
 
 
 void vcsTool::newDb()
     {
-    QString fileName = QFileDialog::getSaveFileName(this,tr("Create new .db file"), QString(),"sqlite Files (*.db)");
+    QString fileName = QFileDialog::getSaveFileName(this,tr("Create new .db file"), QString(),"sqlite File (*.db)");
     if (not fileName.isEmpty() )
         {
-          QSqlDatabase db = QSqlDatabase::addDatabase("QSQLITE");
-          db.setDatabaseName(fileName);
+          QSqlDatabase dataBase = QSqlDatabase::addDatabase("QSQLITE");
+          dataBase.setDatabaseName(fileName);
+
+          setDataBase(dataBase);
 
           bool r = createNewDb(db);
 
-          if (r)
-              {
-                this->connectToDb(db);
-              }
-          else
+          if(not r)
               {
                   QMessageBox msgBox;
                   msgBox.setText("Error Creating database.");
                   msgBox.exec();
                  // QMessageBox.Warning
               }
+
+          connectSectionsModel();
+          connectFeaturesModel();
+
         }
     }
 
@@ -128,23 +94,83 @@ void vcsTool::newDb()
 //called on secBox.currentIndexChanged
     void vcsTool::setSec(int index)
     {
-        QString filt = QString("section_label='%1'").arg(sectionsModel->index(index,7).data(Qt::DisplayRole).toString());
-        //qDebug() << "filt:" << filt;
-        this->featuresModel->setFilter(filt);
+        if (featuresModel and sectionsModel)
+        {
+            int labelField=sectionsModel->fieldIndex("label");
+            QString filt = QString("section_label='%1'").arg(sectionsModel->index(index,labelField).data(Qt::DisplayRole).toString());
+            featuresModel->setFilter(filt);
+        }
     }
 
 
 
-    bool vcsTool::addFeature()
+void vcsTool::connectSectionsModel()//warning if table doesn't exist
+{
+    //sections
+    sectionsModel = new QSqlTableModel(this,db);
+    sectionsModel->setTable("sections");
+    ui->sectionsView->setModel(sectionsModel);
+
+    ui->secBox->setModel(sectionsModel);
+    ui->secBox->setModelColumn(sectionsModel->fieldIndex("label"));
+
+    sectionsModel->select();//this will trigger setSec? before featuresModel set?
+}
+
+
+
+void vcsTool::connectFeaturesModel()//warning if table doesn't exist
+{
+    featuresModel = new QSqlTableModel(this,db);
+    featuresModel->setTable("features");//
+    featuresModel->select();
+    ui->featuresView->setModel(featuresModel);
+
+    //hidden columns
+    ui->featuresView->setColumnHidden(featuresModel->fieldIndex("section_label"),true);
+    ui->featuresView->setColumnHidden(featuresModel->fieldIndex("pk"),true);
+
+    //delegates
+    ui->featuresView->setItemDelegateForColumn(featuresModel->fieldIndex("lane"), laneDelegate);
+    ui->featuresView->setItemDelegateForColumn(featuresModel->fieldIndex("feature"), defectDelegate);
+    ui->featuresView->setItemDelegateForColumn(featuresModel->fieldIndex("location"), locationDelegate);
+    ui->featuresView->setItemDelegateForColumn(featuresModel->fieldIndex("photo"), photoDelegate);
+}
+
+
+void vcsTool::setDataBase(QSqlDatabase dataBase)//open dataBase. set db to this.
+    {
+        db = dataBase;
+
+        if(not db.isOpen()){db.open();}
+        if (db.isOpen())
+        {
+            this->setWindowTitle(db.databaseName()+" - VCS tool");
+        }
+        else
+        {
+            this->setWindowTitle("not connected - VCS tool");
+        }
+    }
+
+    void vcsTool::addFeature()
     {
        qDebug() << "Add Feature";
-       addFeatureDialog * afd =new addFeatureDialog(this,laneDelegate,defectDelegate,locationDelegate,photoDelegate);
-       connect(ui->secBox, &QComboBox::currentTextChanged, afd, &addFeatureDialog::setSec);
+       if (db.isOpen())
+       {
+           addFeatureDialog * afd =new addFeatureDialog(this,db,laneDelegate,defectDelegate,locationDelegate,photoDelegate);
+           connect(ui->secBox, &QComboBox::currentTextChanged, afd, &addFeatureDialog::setSec);
 
+           afd->show();
+           if (featuresModel){featuresModel->select();}
+       }
+       else
+       {
+           QMessageBox msgBox;
+           msgBox.setText("not connected to database.");
+           msgBox.exec();
+       }
 
-       afd->show();
-       return true;
-       //if   (ui->featuresView->model()){fe->select()}
     }
 
 

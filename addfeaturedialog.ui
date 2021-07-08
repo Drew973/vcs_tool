@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>491</width>
-    <height>154</height>
+    <width>673</width>
+    <height>364</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -41,7 +41,7 @@
    <sender>buttonBox</sender>
    <signal>accepted()</signal>
    <receiver>addFeatureDialog</receiver>
-   <slot>accept()</slot>
+   <slot>add()</slot>
    <hints>
     <hint type="sourcelabel">
      <x>248</x>
@@ -70,4 +70,7 @@
    </hints>
   </connection>
  </connections>
+ <slots>
+  <slot>add()</slot>
+ </slots>
 </ui>

@@ -6,7 +6,6 @@
 
 comboboxDelegate::comboboxDelegate(QObject *parent,QStringList items,QAbstractItemModel * model) : QStyledItemDelegate(parent)
 {
-    qDebug() << "created";
     if (not items.isEmpty()){setItems(items);}
     if(model){setModel(model);}
 }
