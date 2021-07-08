@@ -10,7 +10,7 @@
 #include <QSqlTableModel>
 #include <QDebug>
 #include <QStringList>
-
+#include <algorithm>
 
 #include "addfeaturedialog.h"
 
@@ -33,9 +33,12 @@ vcsTool::vcsTool(QWidget *parent)
     connect(newAct, &QAction::triggered, this, &vcsTool::newDb);
 
     QMenu *featuresMenu =menuBar()->addMenu("&Features");
-    QAction *addFeatAct = new QAction("&Add Feature", this);
-    featuresMenu->addAction(addFeatAct);
+
+    QAction *addFeatAct = featuresMenu->addAction("&Add Feature");
     connect(addFeatAct, &QAction::triggered, this, &vcsTool::addFeature);
+
+    QAction *dropSelectedAct = featuresMenu->addAction("&Drop Selected Features");
+    connect(dropSelectedAct, &QAction::triggered, this, &vcsTool::dropSelectedFeatures);
 
 }
 
@@ -160,9 +163,14 @@ void vcsTool::setDataBase(QSqlDatabase dataBase)//open dataBase. set db to this.
        {
            addFeatureDialog * afd =new addFeatureDialog(this,db,laneDelegate,defectDelegate,locationDelegate,photoDelegate);
            connect(ui->secBox, &QComboBox::currentTextChanged, afd, &addFeatureDialog::setSec);
+           afd->setSec(ui->secBox->currentText());
 
            afd->show();
-           if (featuresModel){featuresModel->select();}
+           if (featuresModel)
+           {
+               connect(afd,&QDialog::accepted,featuresModel,&QSqlTableModel::select);
+               featuresModel->select();
+           }
        }
        else
        {
@@ -170,8 +178,26 @@ void vcsTool::setDataBase(QSqlDatabase dataBase)//open dataBase. set db to this.
            msgBox.setText("not connected to database.");
            msgBox.exec();
        }
-
     }
 
+
+
+void vcsTool::dropSelectedFeatures()
+    {
+        QItemSelectionModel *m = ui->featuresView->selectionModel();
+
+        if (m and featuresModel)
+        {
+            QModelIndexList indices = m->selectedRows();
+            for (int i=indices.count()-1; i>=0; --i)
+            {
+                QModelIndex index = indices.at(i);
+                featuresModel->removeRow(index.row());
+            }
+
+         featuresModel->select();
+         }
+
+    }
 
 

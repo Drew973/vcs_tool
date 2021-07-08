@@ -46,6 +46,8 @@ class vcsTool : public QMainWindow
 
         void setSec(int index);
         void addFeature();//show addFeatureDialog
+        void dropSelectedFeatures();
+
 
     private:
         Ui::vcsTool *ui;
