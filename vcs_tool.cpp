@@ -2,6 +2,9 @@
 #include "ui_vcs_tool.h"
 #include "dbInterface.h"
 #include "addfeaturedialog.h"
+#include "sectionsModel.h"
+
+#include "recordModel.h"
 
 #include <QFileDialog>
 #include <QString>
@@ -12,7 +15,8 @@
 #include <QStringList>
 #include <algorithm>
 
-#include "addfeaturedialog.h"
+
+#include <QStyledItemDelegate>
 
 
 vcsTool::vcsTool(QWidget *parent)
@@ -40,6 +44,15 @@ vcsTool::vcsTool(QWidget *parent)
     QAction *dropSelectedAct = featuresMenu->addAction("&Drop Selected Features");
     connect(dropSelectedAct, &QAction::triggered, this, &vcsTool::dropSelectedFeatures);
 
+    QMenu *sectionsMenu =menuBar()->addMenu("&Sections");
+    QAction *addSectionAct = sectionsMenu->addAction("&Add Section");
+    //connect(dropSelectedAct, &QAction::triggered, this, &vcsTool::dropSelectedFeatures);
+
+    connect(ui->secBox, &QComboBox::currentTextChanged, afd, &addFeatureDialog::setSec);
+    afd->setSec(ui->secBox->currentText());
+
+    connect(this, &vcsTool::databaseSet, afd, &addFeatureDialog::setDatabase);
+
 }
 
 
@@ -59,7 +72,7 @@ void vcsTool::openDb()
         QSqlDatabase dataBase = QSqlDatabase::addDatabase("QSQLITE");
         dataBase.setDatabaseName(fileName);
         setDataBase(dataBase);
-        connectSectionsModel();
+        connectSectModel();
         connectFeaturesModel();
     }
 }
@@ -87,7 +100,7 @@ void vcsTool::newDb()
                  // QMessageBox.Warning
               }
 
-          connectSectionsModel();
+          connectSectModel();
           connectFeaturesModel();
 
         }
@@ -97,27 +110,35 @@ void vcsTool::newDb()
 //called on secBox.currentIndexChanged
     void vcsTool::setSec(int index)
     {
-        if (featuresModel and sectionsModel)
+        if (featuresModel and sectModel)
         {
-            int labelField=sectionsModel->fieldIndex("label");
-            QString filt = QString("section_label='%1'").arg(sectionsModel->index(index,labelField).data(Qt::DisplayRole).toString());
+            int labelField=sectModel->fieldIndex("label");
+            QString filt = QString("section_label='%1'").arg(sectModel->index(index,labelField).data(Qt::DisplayRole).toString());
             featuresModel->setFilter(filt);
         }
     }
 
 
 
-void vcsTool::connectSectionsModel()//warning if table doesn't exist
+void vcsTool::connectSectModel()//warning if table doesn't exist
 {
     //sections
-    sectionsModel = new QSqlTableModel(this,db);
-    sectionsModel->setTable("sections");
-    ui->sectionsView->setModel(sectionsModel);
+    sectModel = new sectionsModel(this,db);
+    sectModel->setTable("sections");
+    ui->sectionsView->setModel(sectModel);
 
-    ui->secBox->setModel(sectionsModel);
-    ui->secBox->setModelColumn(sectionsModel->fieldIndex("label"));
+    ui->secBox->setModel(sectModel);
+    ui->secBox->setModelColumn(sectModel->fieldIndex("label"));
 
-    sectionsModel->select();//this will trigger setSec? before featuresModel set?
+    sectModel->select();//this will trigger setSec? before featuresModel set?
+
+
+    recordModel* r =new recordModel(this,sectModel->record());
+    ui->insertSectionView->setModel(r);
+
+    QStyledItemDelegate* delegate=new QStyledItemDelegate(ui->insertSectionView);//same results with these.
+    ui->insertSectionView->setItemDelegateForRow(0,delegate);
+
 }
 
 
@@ -126,6 +147,7 @@ void vcsTool::connectFeaturesModel()//warning if table doesn't exist
 {
     featuresModel = new QSqlTableModel(this,db);
     featuresModel->setTable("features");//
+    connect(afd,&QDialog::accepted,featuresModel,&QSqlTableModel::select);
     featuresModel->select();
     ui->featuresView->setModel(featuresModel);
 
@@ -144,6 +166,7 @@ void vcsTool::connectFeaturesModel()//warning if table doesn't exist
 void vcsTool::setDataBase(QSqlDatabase dataBase)//open dataBase. set db to this.
     {
         db = dataBase;
+        emit databaseSet(dataBase);
 
         if(not db.isOpen()){db.open();}
         if (db.isOpen())
@@ -161,17 +184,27 @@ void vcsTool::setDataBase(QSqlDatabase dataBase)//open dataBase. set db to this.
        qDebug() << "Add Feature";
        if (db.isOpen())
        {
-           addFeatureDialog * afd =new addFeatureDialog(this,db,laneDelegate,defectDelegate,locationDelegate,photoDelegate);
-           connect(ui->secBox, &QComboBox::currentTextChanged, afd, &addFeatureDialog::setSec);
-           afd->setSec(ui->secBox->currentText());
-
            afd->show();
-           if (featuresModel)
-           {
-               connect(afd,&QDialog::accepted,featuresModel,&QSqlTableModel::select);
-               featuresModel->select();
-           }
        }
+
+       else
+       {
+           QMessageBox msgBox;
+           msgBox.setText("not connected to database.");
+           msgBox.exec();
+       }
+    }
+
+
+
+    void vcsTool::addSection()
+    {
+       qDebug() << "Add Section";
+       if (db.isOpen())
+       {
+           addFeatureDialog->show();
+       }
+
        else
        {
            QMessageBox msgBox;

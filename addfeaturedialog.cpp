@@ -64,6 +64,7 @@ void addFeatureDialog::add()
     accept();
 }
 
+//gets data at column i
 QVariant addFeatureDialog::d(int i)
 {
     QStandardItem * item=model->item(0,i);

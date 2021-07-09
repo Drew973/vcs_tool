@@ -14,8 +14,11 @@ SOURCES += \
     dbInterface.cpp \
     filewidget.cpp \
     filewidgetdelegate.cpp \
-    insertableproxymodel.cpp \
+    insertDialog.cpp \
     main.cpp \
+    recordModel.cpp \
+    sectionsModel.cpp \
+    test.cpp \
     vcs_tool.cpp
 
 HEADERS += \
@@ -24,7 +27,10 @@ HEADERS += \
     dbInterface.h \
     filewidget.h \
     filewidgetdelegate.h \
-    insertableproxymodel.h \
+    insertDialog.h \
+    recordModel.h \
+    sectionsModel.h \
+    test.h \
     vcs_tool.h
 
 FORMS += \

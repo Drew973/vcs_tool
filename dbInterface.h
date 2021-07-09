@@ -4,7 +4,7 @@
 #endif // DBINTERFACE_H
 #include <QSqlDatabase>
 
-
+//move this to model subclasses
 bool createNewDb(QSqlDatabase db);
 
 
