@@ -8,8 +8,11 @@
 
 class recordModel : public QAbstractTableModel
 {
-public:
-    explicit recordModel(QObject *parent = nullptr,QSqlRecord record=QSqlRecord());
+    Q_OBJECT
+    public:
+
+
+    recordModel(QObject *parent = nullptr,QSqlRecord record=QSqlRecord());
 
     QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const;
 
@@ -31,7 +34,7 @@ public:
 
 
    private:
-        QSqlRecord rec;
+        QSqlRecord rec = QSqlRecord();
 
 };
 

@@ -1,6 +1,8 @@
 #include "recordModel.h"
 #include <QSqlField>
 #include <QDebug>
+#include <QSqlRecord>
+
 
 //QString QSqlRecord::fieldName(int index) const
 
@@ -50,9 +52,10 @@ QVariant recordModel::data(const QModelIndex &index, int role) const
 {
     if (role==Qt::DisplayRole or role==Qt::EditRole)
     {
-        qDebug() << rec.value(index.column());
-        return rec.value(index.column());
-
+        if (rec.count()>0)
+        {
+            return rec.value(index.column());
+        }
     }
     return QVariant();
 }

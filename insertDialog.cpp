@@ -1,6 +1,8 @@
 #include "insertDialog.h"
-#include "vcs_tool.h"
-#include "dbInterface.h"
+
+//#include "vcs_tool.h"
+//#include "dbInterface.h"
+#include "recordModel.h"
 
 
 #include <QAbstractItemDelegate>
@@ -11,7 +13,6 @@
 #include <QDebug>
 #include <QSqlError>
 #include <QSqlTableModel>
-
 
 
 //if model and record given set them. if model given and record empty sets record to model.record()
@@ -41,9 +42,12 @@ void insertDialog::setModel(QSqlTableModel * model)
 
 void insertDialog::insert()//try to insert record
 {
-    if(tableMod){tableMod->insertRecord(-1,recMod.record());}
-    emit fin(recMod.record());
+//    if(tableMod){tableMod->insertRecord(-1,recMod->record());}
+   // emit fin(recMod->record());
 }
 
 
-void setRecord(QSqlRecord);
+void insertDialog::setRecord(QSqlRecord record)
+{
+    recMod->setRecord(record);
+}

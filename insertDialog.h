@@ -43,7 +43,7 @@ signals:
 private:
     QTableView view = QTableView(this);
     QSqlTableModel* tableMod;
-    recordModel recMod = recordModel(this);
+    recordModel* recMod;// = new recordModel(this);
 
 };
 

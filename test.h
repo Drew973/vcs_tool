@@ -2,6 +2,7 @@
 #define TEST_H
 
 #include <QMainWindow>
+#include <QObject>
 
 class test : public QMainWindow
 {

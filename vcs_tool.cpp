@@ -2,9 +2,11 @@
 #include "ui_vcs_tool.h"
 #include "dbInterface.h"
 #include "addfeaturedialog.h"
-#include "sectionsModel.h"
 
+#include "sectionsModel.h"
 #include "recordModel.h"
+//#include "insertDialog.h"
+
 
 #include <QFileDialog>
 #include <QString>
@@ -14,6 +16,9 @@
 #include <QDebug>
 #include <QStringList>
 #include <algorithm>
+#include <QObject>
+#include <QAction>
+#include <QMainWindow>
 
 
 #include <QStyledItemDelegate>
@@ -130,14 +135,11 @@ void vcsTool::connectSectModel()//warning if table doesn't exist
     ui->secBox->setModel(sectModel);
     ui->secBox->setModelColumn(sectModel->fieldIndex("label"));
 
-    sectModel->select();//this will trigger setSec? before featuresModel set?
+    sectModel->select();
 
 
     recordModel* r =new recordModel(this,sectModel->record());
     ui->insertSectionView->setModel(r);
-
-    QStyledItemDelegate* delegate=new QStyledItemDelegate(ui->insertSectionView);//same results with these.
-    ui->insertSectionView->setItemDelegateForRow(0,delegate);
 
 }
 
@@ -202,7 +204,7 @@ void vcsTool::setDataBase(QSqlDatabase dataBase)//open dataBase. set db to this.
        qDebug() << "Add Section";
        if (db.isOpen())
        {
-           addFeatureDialog->show();
+          // addFeatureDialog->show();
        }
 
        else
