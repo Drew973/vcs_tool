@@ -204,7 +204,7 @@ void vcsTool::setDataBase(QSqlDatabase dataBase)//open dataBase. set db to this.
        qDebug() << "Add Section";
        if (db.isOpen())
        {
-          // addFeatureDialog->show();
+          addSectionDialog->show();
        }
 
        else

@@ -8,7 +8,6 @@
 #include "filewidgetdelegate.h"
 #include "addfeaturedialog.h"
 #include "sectionsModel.h"
-#include "insertDialog.h"
 #include "addfeaturedialog.h"
 
 #include <QMainWindow>
@@ -18,6 +17,7 @@
 #include <QSqlTableModel>
 #include <QSqlRelationalTableModel>
 #include <QString>
+#include "insertDialog.h"
 
 
 
@@ -46,6 +46,9 @@ private:
     Ui::vcsTool *ui;
     QSqlDatabase db =QSqlDatabase();//test if connected with .isOpen(). test if set with .isValid().
 
+    //notype n;
+    insertDialog* addSectionDialog = new insertDialog(this);
+
     comboboxDelegate * laneDelegate = new comboboxDelegate(this,lanes);
     comboboxDelegate * defectDelegate = new comboboxDelegate(this,defects);
     comboboxDelegate * locationDelegate = new comboboxDelegate(this,locations);
@@ -54,12 +57,11 @@ private:
     sectionsModel * sectModel=nullptr;
     QSqlTableModel * featuresModel=nullptr;
     addFeatureDialog * afd =new addFeatureDialog(this,db,laneDelegate,defectDelegate,locationDelegate,photoDelegate);
- //   insertDialog * addSectionDialog = new addSectionDialog(this);
 
 
 public slots:
     void openDb();//handles open database... action.
-    void newDb();//handles new database... action. create new.db then connect models to it.
+    void newDb();//handles new database... //action. create new.db then connect models to it.
 
 
     void setDataBase(QSqlDatabase dataBase);//open dataBase. set db to this.

@@ -13,11 +13,15 @@
 #include <QDebug>
 #include <QSqlError>
 #include <QSqlTableModel>
+#include <QVBoxLayout>
+#include<QTableView>
 
 
 //if model and record given set them. if model given and record empty sets record to model.record()
 insertDialog::insertDialog(QWidget *parent,QSqlRecord record,QSqlTableModel * model)
 {
+    setLayout(new QVBoxLayout(this));
+    layout()->addWidget(view);
     setModel(model);
     if (record.isEmpty() and model){setRecord(model->record());}
 }
@@ -36,6 +40,7 @@ insertDialog::~insertDialog()
 void insertDialog::setModel(QSqlTableModel * model)
 {
     tableMod = model;
+    view->setModel(tableMod);
 }
 
 

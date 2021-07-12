@@ -1,5 +1,5 @@
-#ifndef ADDFEATUREDIALOG_H
-#define ADDFEATUREDIALOG_H
+#ifndef INSERTDIALOG_H
+#define INSERTDIALOG_H
 
 
 
@@ -28,7 +28,7 @@ class insertDialog : public QDialog
     Q_OBJECT
 
 public:
-    explicit insertDialog(QWidget *parent=nullptr,QSqlRecord record=QSqlRecord(),QSqlTableModel* model=nullptr);
+    insertDialog(QWidget *parent=nullptr,QSqlRecord record=QSqlRecord(),QSqlTableModel* model=nullptr);
     ~insertDialog();
 
 
@@ -41,10 +41,10 @@ signals:
     void fin (QSqlRecord);
 
 private:
-    QTableView view = QTableView(this);
+    QTableView* view = new QTableView(this);
     QSqlTableModel* tableMod;
     recordModel* recMod;// = new recordModel(this);
 
 };
 
-#endif // ADDFEATUREDIALOG_H
+#endif // INSERTDIALOG_H
