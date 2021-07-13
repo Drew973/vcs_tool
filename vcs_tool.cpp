@@ -41,6 +41,14 @@ vcsTool::vcsTool(QWidget *parent)
     connect(openAct, &QAction::triggered, this, &vcsTool::openDb);
     connect(newAct, &QAction::triggered, this, &vcsTool::newDb);
 
+
+    //sections menu
+    QMenu *sectionsMenu =menuBar()->addMenu("&Sections");
+    QAction *addSectionAct = sectionsMenu->addAction("&Add Section");
+    connect(addSectionAct, &QAction::triggered, this, &vcsTool::addSection);
+
+
+
     QMenu *featuresMenu =menuBar()->addMenu("&Features");
 
     QAction *addFeatAct = featuresMenu->addAction("&Add Feature");
@@ -49,9 +57,7 @@ vcsTool::vcsTool(QWidget *parent)
     QAction *dropSelectedAct = featuresMenu->addAction("&Drop Selected Features");
     connect(dropSelectedAct, &QAction::triggered, this, &vcsTool::dropSelectedFeatures);
 
-    QMenu *sectionsMenu =menuBar()->addMenu("&Sections");
-    QAction *addSectionAct = sectionsMenu->addAction("&Add Section");
-    //connect(dropSelectedAct, &QAction::triggered, this, &vcsTool::dropSelectedFeatures);
+
 
     connect(ui->secBox, &QComboBox::currentTextChanged, afd, &addFeatureDialog::setSec);
     afd->setSec(ui->secBox->currentText());
@@ -137,9 +143,11 @@ void vcsTool::connectSectModel()//warning if table doesn't exist
 
     sectModel->select();
 
-
     recordModel* r =new recordModel(this,sectModel->record());
     ui->insertSectionView->setModel(r);
+
+    if(addSectionDialog){addSectionDialog->setRecord(sectModel->record());}
+  //  if(addSectionDialog){addSectionDialog->setModel(sectModel);}
 
 }
 

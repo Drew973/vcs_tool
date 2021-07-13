@@ -40,7 +40,6 @@ insertDialog::~insertDialog()
 void insertDialog::setModel(QSqlTableModel * model)
 {
     tableMod = model;
-    view->setModel(tableMod);
 }
 
 
@@ -55,4 +54,6 @@ void insertDialog::insert()//try to insert record
 void insertDialog::setRecord(QSqlRecord record)
 {
     recMod->setRecord(record);
+    view->setModel(recMod);
+
 }
