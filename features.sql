@@ -9,8 +9,7 @@ create table features(
         ,photo text
         ,section_label text
         ,photo_number int
-        ,foreign key(section_label) references sections(label))
-
+        ,foreign key(section_label) references sections(label) on update cascade)
 
 
 insert into features(lane,s_ch,e_ch,width,feature,location,photo,section_label,photo_number)

@@ -11,6 +11,7 @@ CONFIG += c++11
 
 SOURCES += \
     addfeaturedialog.cpp \
+    blacklistValidator.cpp \
     comboboxdelegate.cpp \
     dbInterface.cpp \
     filewidget.cpp \
@@ -24,6 +25,7 @@ SOURCES += \
 
 HEADERS += \
     addfeaturedialog.h \
+    blacklistValidator.h \
     comboboxdelegate.h \
     dbInterface.h \
     filewidget.h \

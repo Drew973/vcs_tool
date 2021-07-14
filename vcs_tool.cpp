@@ -6,7 +6,7 @@
 #include "sectionsModel.h"
 #include "recordModel.h"
 //#include "insertDialog.h"
-
+#include "blacklistValidator.h"
 
 #include <QFileDialog>
 #include <QString>
@@ -22,7 +22,7 @@
 
 
 #include <QStyledItemDelegate>
-
+#include <QStringList>
 
 vcsTool::vcsTool(QWidget *parent)
     : QMainWindow(parent)
@@ -47,8 +47,6 @@ vcsTool::vcsTool(QWidget *parent)
     QAction *addSectionAct = sectionsMenu->addAction("&Add Section");
     connect(addSectionAct, &QAction::triggered, this, &vcsTool::addSection);
 
-
-
     QMenu *featuresMenu =menuBar()->addMenu("&Features");
 
     QAction *addFeatAct = featuresMenu->addAction("&Add Feature");
@@ -64,6 +62,10 @@ vcsTool::vcsTool(QWidget *parent)
 
     connect(this, &vcsTool::databaseSet, afd, &addFeatureDialog::setDatabase);
 
+
+    addSectionDialog->setModal(true);
+    blacklistValidator * v = new blacklistValidator(this,{ "test", "test2", "test3" });
+    ui->blacklistTest->setValidator(v);
 }
 
 
@@ -76,7 +78,7 @@ vcsTool::~vcsTool()
 
 void vcsTool::openDb()
 {
-    QString fileName = QFileDialog::getOpenFileName(this,tr("Open .db file"), QString(),"sqlite File (*.db)");
+    QString fileName = QFileDialog::getOpenFileName(this,tr("Open Sqlite Database"), QString(),"sqlite File (*.db)");
 
     if (not fileName.isEmpty() )
     {
@@ -148,6 +150,9 @@ void vcsTool::connectSectModel()//warning if table doesn't exist
 
     if(addSectionDialog){addSectionDialog->setRecord(sectModel->record());}
   //  if(addSectionDialog){addSectionDialog->setModel(sectModel);}
+
+
+   // ui->sectionsView->setItemDelegateForColumn(featuresModel->fieldIndex("lane"), laneDelegate);
 
 }
 

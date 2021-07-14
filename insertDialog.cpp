@@ -15,6 +15,7 @@
 #include <QSqlTableModel>
 #include <QVBoxLayout>
 #include<QTableView>
+#include <QSizePolicy>
 
 
 //if model and record given set them. if model given and record empty sets record to model.record()
@@ -23,6 +24,9 @@ insertDialog::insertDialog(QWidget *parent,QSqlRecord record,QSqlTableModel * mo
     setLayout(new QVBoxLayout(this));
     layout()->addWidget(view);
     setModel(model);
+    setSizePolicy(QSizePolicy::MinimumExpanding,QSizePolicy::Preferred);
+    view->setSizePolicy(QSizePolicy::MinimumExpanding,QSizePolicy::Preferred);
+
     if (record.isEmpty() and model){setRecord(model->record());}
 }
 
@@ -55,5 +59,6 @@ void insertDialog::setRecord(QSqlRecord record)
 {
     recMod->setRecord(record);
     view->setModel(recMod);
+    view->resizeColumnsToContents();
 
 }

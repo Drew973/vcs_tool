@@ -57,7 +57,7 @@ bool createNewDb(QSqlDatabase db)
         ,photo text\
         ,section_label text\
         ,photo_number int\
-        ,foreign key(section_label) references sections(label))";
+        ,foreign key(section_label) references sections(label) on update cascade)";
 
     if( not q.exec(initFeaturesQuery))
         {
