@@ -30,7 +30,6 @@ QWidget *comboboxDelegate::createEditor(QWidget *parent,const QStyleOptionViewIt
 
         return b;
 
-
     }
 
 

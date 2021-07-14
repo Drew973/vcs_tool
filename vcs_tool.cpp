@@ -64,8 +64,7 @@ vcsTool::vcsTool(QWidget *parent)
 
 
     addSectionDialog->setModal(true);
-    blacklistValidator * v = new blacklistValidator(this,{ "test", "test2", "test3" });
-    ui->blacklistTest->setValidator(v);
+
 }
 
 
@@ -153,6 +152,11 @@ void vcsTool::connectSectModel()//warning if table doesn't exist
 
 
    // ui->sectionsView->setItemDelegateForColumn(featuresModel->fieldIndex("lane"), laneDelegate);
+    //blacklistValidator * v = new blacklistValidator(this,sectModel,sectModel->fieldIndex("label"));
+  //  ui->blacklistTest->setValidator(v);
+   // secDelegate->setIndex(sectModel.index(0,sectModel->fieldIndex("label")));
+    ui->sectionsView->setItemDelegateForColumn(sectModel->fieldIndex("label"),secDelegate);
+    ui->sectionsView->resizeColumnsToContents();
 
 }
 

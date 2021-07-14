@@ -21,6 +21,7 @@ SOURCES += \
     recordModel.cpp \
     sectionsModel.cpp \
     test.cpp \
+    uniqueTextDelegate.cpp \
     vcs_tool.cpp
 
 HEADERS += \
@@ -34,6 +35,7 @@ HEADERS += \
     recordModel.h \
     sectionsModel.h \
     test.h \
+    uniqueTextDelegate.h \
     vcs_tool.h
 
 FORMS += \

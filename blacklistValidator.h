@@ -1,25 +1,26 @@
 #ifndef BLACKLISTVALIDATOR_H
 #define BLACKLISTVALIDATOR_H
+#include <QAbstractItemModel>
+#include <QModelIndex>
 
-
-
-#include <QStringList>
+/*validator to search column of model for input and return QValidator::intermediate if found
+ *
+ */
 
 #include <QValidator>
 
 class blacklistValidator : public QValidator
 {
-public:
-    explicit blacklistValidator(QObject *parent = nullptr,QStringList blacklist=QStringList());
-
-    QValidator::State validate(QString &input, int &pos) const;
-    void setBlacklist(QStringList blacklist);
-    QStringList blacklist();
+    Q_OBJECT
 
 
-private:
-    QStringList list;
+    public:
+        explicit blacklistValidator(QObject *parent = nullptr,QModelIndex index=QModelIndex());
+        QValidator::State validate(QString &input, int &pos) const;
+        void setIndex(QModelIndex index);
 
+    private:
+        QModelIndex ind=QModelIndex();
 };
 
 #endif // BLACKLISTVALIDATOR_H

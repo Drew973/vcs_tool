@@ -18,7 +18,7 @@
 #include <QSqlRelationalTableModel>
 #include <QString>
 #include "insertDialog.h"
-
+#include "uniqueTextDelegate.h"
 
 
 
@@ -53,11 +53,11 @@ private:
     comboboxDelegate * defectDelegate = new comboboxDelegate(this,defects);
     comboboxDelegate * locationDelegate = new comboboxDelegate(this,locations);
     fileWidgetDelegate * photoDelegate = new fileWidgetDelegate(this,"Images (*.png *.bmp *.jpg)");
+    uniqueTextDelegate* secDelegate=new uniqueTextDelegate(this);
 
     sectionsModel * sectModel=nullptr;
     QSqlTableModel * featuresModel=nullptr;
     addFeatureDialog * afd =new addFeatureDialog(this,db,laneDelegate,defectDelegate,locationDelegate,photoDelegate);
-
 
 public slots:
     void openDb();//handles open database... action.
