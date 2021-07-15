@@ -37,6 +37,7 @@ bool sectionsModel::addSection(QVariant number,QVariant project,QVariant directi
 
     if (q.exec())
     {
+        select();
         return true;
     }
     else
@@ -46,4 +47,43 @@ bool sectionsModel::addSection(QVariant number,QVariant project,QVariant directi
     }
 
 }
+
+
+/*
+bool sectionsModel::initializeTable()
+{
+    QString initSectionsQuery = "create table if not exists sections(\
+            number int\
+            ,project text\
+            ,direction text\
+            ,job_no text\
+            ,date text\
+            ,client text\
+            ,contractor text\
+            ,label text primary key not null\
+            ,surveyor text\
+            ,weather text\
+            ,start_lon float\
+            ,start_lat float\
+            ,end_lon float\
+            ,end_lat float\
+            ,length_surveyed float\
+            )";
+
+//section_label is also unique and could be pk
+
+    QSqlQuery q(database());
+
+    if( not q.exec(initSectionsQuery))
+        {
+        qDebug() << "Failed query:" << initSectionsQuery <<" .error was:"<<q.lastError().databaseText();
+        return false;
+        }
+
+    return true
+
+
+}
+*/
+
 

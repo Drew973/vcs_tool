@@ -19,5 +19,5 @@ create table if not exists sections
 
 
 
-insert into sections
-select * from sections_backup
+--insert into sections
+--select * from sections_backup

@@ -60,8 +60,8 @@ private:
     addFeatureDialog * afd =new addFeatureDialog(this,db,laneDelegate,defectDelegate,locationDelegate,photoDelegate);
 
 public slots:
-    void openDb();//handles open database... action.
-    void newDb();//handles new database... //action. create new.db then connect models to it.
+    void onOpenAction();//handles open database... action.
+    void onNewAction();//handles new database... //action. create new.db then connect models to it.
 
 
     void setDataBase(QSqlDatabase dataBase);//open dataBase. set db to this.

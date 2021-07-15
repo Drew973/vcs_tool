@@ -38,8 +38,8 @@ vcsTool::vcsTool(QWidget *parent)
     QAction * openAct = new QAction("&Open", this);
     fileMenu->addAction(openAct);
 
-    connect(openAct, &QAction::triggered, this, &vcsTool::openDb);
-    connect(newAct, &QAction::triggered, this, &vcsTool::newDb);
+    connect(openAct, &QAction::triggered, this, &vcsTool::onOpenAction);
+    connect(newAct, &QAction::triggered, this, &vcsTool::onNewAction);
 
 
     //sections menu
@@ -75,7 +75,7 @@ vcsTool::~vcsTool()
 
 
 
-void vcsTool::openDb()
+void vcsTool::onOpenAction()
 {
     QString fileName = QFileDialog::getOpenFileName(this,tr("Open Sqlite Database"), QString(),"sqlite File (*.db)");
 
@@ -92,7 +92,8 @@ void vcsTool::openDb()
 
 
 
-void vcsTool::newDb()
+//void vcsTool::newDb()
+void vcsTool::onNewAction()
     {
     QString fileName = QFileDialog::getSaveFileName(this,tr("Create new .db file"), QString(),"sqlite File (*.db)");
     if (not fileName.isEmpty() )
@@ -100,18 +101,9 @@ void vcsTool::newDb()
           QSqlDatabase dataBase = QSqlDatabase::addDatabase("QSQLITE");
           dataBase.setDatabaseName(fileName);
 
-          setDataBase(dataBase);
+          setDataBase(dataBase);//opens database
 
-          bool r = createNewDb(db);
-
-          if(not r)
-              {
-                  QMessageBox msgBox;
-                  msgBox.setText("Error Creating database.");
-                  msgBox.exec();
-                 // QMessageBox.Warning
-              }
-
+          setupDatabase(dataBase);
           connectSectModel();
           connectFeaturesModel();
 

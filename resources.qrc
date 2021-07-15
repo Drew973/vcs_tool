@@ -1,0 +1,6 @@
+<RCC>
+    <qresource prefix="/tables">
+        <file>sections.sql</file>
+        <file>features.sql</file>
+    </qresource>
+</RCC>

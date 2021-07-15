@@ -3,6 +3,9 @@
 #include <QSqlQuery>
 #include <QDebug>
 #include <QSqlError>
+#include <QDir>
+#include <QMessageBox>
+#include <QCoreApplication>
 
 
 bool createNewDb(QSqlDatabase db)
@@ -56,7 +59,6 @@ bool createNewDb(QSqlDatabase db)
         ,location text\
         ,photo text\
         ,section_label text\
-        ,photo_number int\
         ,foreign key(section_label) references sections(label) on update cascade)";
 
     if( not q.exec(initFeaturesQuery))
@@ -68,6 +70,71 @@ bool createNewDb(QSqlDatabase db)
 
         return true;
     }
+
+
+
+void displayError(QString error)
+{
+    QMessageBox msgBox;
+    msgBox.setText(error);
+    msgBox.exec();
+    // QMessageBox.Warning
+}
+
+
+//run simple query and display error message if failed.
+bool runQuery(QSqlDatabase db,QString query)
+{
+    QSqlQuery q(db);
+
+    if( not q.exec(query))
+        {
+        qDebug() << "Failed query:" << query <<" .error was:"<<q.lastError().databaseText();
+        return false;
+        }
+    return true;
+}
+
+
+//run simple query and display error message if failed.
+bool runFile(QSqlDatabase db,QFile file)
+{
+    if (!file.open(QFile::ReadOnly | QFile::Text))
+    {
+        displayError("file not found");
+        return false;
+    }
+
+    QTextStream s(&file);
+    return runQuery(db,s.readAll());
+}
+
+
+
+
+//db=open QSqlDatabase
+bool setupDatabase(QSqlDatabase db)
+{
+/*
+    qDebug() << QDir::currentPath();
+    QFile f(":tables/sections.sql");
+    if (!f.open(QFile::ReadOnly | QFile::Text))
+    {
+        displayError("sections.sql not found");
+        return false;
+    }
+
+    QTextStream in(&f);
+    qDebug() << f.size() << in.readAll();
+
+ //   qDebug() << q;
+
+*/
+    if (not runFile(db,QFile(":tables/sections.sql"))){return false;}
+    if (not runFile(db,QFile(":tables/features.sql"))){return false;}
+
+    return true;
+}
 
 
 

@@ -8,9 +8,8 @@ create table features(
         ,location text
         ,photo text
         ,section_label text
-        ,photo_number int
         ,foreign key(section_label) references sections(label) on update cascade)
 
 
-insert into features(lane,s_ch,e_ch,width,feature,location,photo,section_label,photo_number)
-select lane,s_ch,e_ch,width,feature,location,photo,(select label from sections where number=section_number),photo_number from f2
+--insert into features(lane,s_ch,e_ch,width,feature,location,photo,section_label,photo_number)
+--select lane,s_ch,e_ch,width,feature,location,photo,(select label from sections where number=section_number),photo_number from f2
