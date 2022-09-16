@@ -19,6 +19,8 @@ SOURCES += \
     insertDialog.cpp \
     main.cpp \
     recordModel.cpp \
+    schematicScene.cpp \
+    schematicView.cpp \
     sectionsModel.cpp \
     test.cpp \
     uniqueTextDelegate.cpp \
@@ -34,6 +36,8 @@ HEADERS += \
     filewidgetdelegate.h \
     insertDialog.h \
     recordModel.h \
+    schematicScene.h \
+    schematicView.h \
     sectionsModel.h \
     test.h \
     uniqueTextDelegate.h \

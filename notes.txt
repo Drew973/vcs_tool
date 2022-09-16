@@ -1,0 +1,113 @@
+section:
+
+	comboboxDelegate seems to be working.
+
+
+
+sections inner join features on sections.id = features.section_number order by sections.id,s_ch,e_ch desc,width desc
+
+
+
+y position from lane and xsp:
+	can have multiple lanes. eg CL1&CL2
+
+	handling in flexible way? eg more than 3 lanes.
+	
+
+want constraint on lanes and position.
+foreign key with QsqlRelationalTableModel?
+
+
+foreign key simplifies delegate and more flexible. 
+
+look up top for lane and add to top(pos)/n lanes to get top(lane,xsp).
+look up bottom for lane and add to bottom(pos)/n lanes to get top(lane,xsp).
+
+
+
+
+table lanes
+lane text primary ket
+, top float-- fraction 
+,bottom float
+
+#
+table positions
+pos text primary key
+,top float --fraction of lane.
+,bottom float
+
+
+want something to:
+
+	read spreadsheet
+		tricky. don't bother with this.
+
+
+	export:
+		write spreadsheet 
+		option to copy photos to different folder and renumber. 
+		Model should store original location. don't change this when copying photo
+
+	could have QSqlTable models edit on manual submit when save action taken . submitAll() returns true if successful. can get last error with lastError()
+
+
+	add sections:
+		new row via proxymodel
+		or dialog
+
+			generate from model.
+			should work for any model used by qtableView
+			QDataWidgetMapper does this
+
+
+	add feature dialog.	
+
+		insert dialog with qtableView showing each column of featuresView and insert button.
+		lane,s_ch,e_ch,width,feature,location,photo,section_label (from secBox)
+
+		know what delegates needed. Set them or QStyledItemDelegate.
+		know what cols should be hidden because set them.can use QTableView.isColumnHidden(int column)
+		
+		get delegate with QAbstractItemView::itemDelegateForColumn
+		set with setItemDelegateForColumn(),
+		sharing delegates between views can be problem
+
+https://doc.qt.io/qt-5/qabstractitemview.html#itemDelegateForColumn		
+
+
+
+
+add section. only need label.edit everything else through view.
+
+
+dialog better for large number of rows as don't need to scroll to bottom.
+	more verbose message on failure to add.	
+	proxy model with fake row to insert
+
+
+automated vcs is being worked on. 
+
+use sqlite database as model.
+can use in memory or on disk.
+
+
+
+
+display schematic
+maybe drag schematic to change model? unnecessary
+
+QGraphicsScene subclass.
+
+connect to signals:
+QAbstractItemModel::rowsInserted(const QModelIndex &parent, int first, int last)
+This signal is emitted after rows have been inserted into the model. The new items are those between first and last inclusive, under the given parent item.
+
+
+QAbstractItemModel::rowsRemoved(const QModelIndex &parent, int first, int last)
+
+QAbstractItemModel::dataChanged(const QModelIndex &topLeft, const QModelIndex &bottomRight, const QVector<int> &roles = QVector<int>())
+
+
+
+

@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>696</width>
-    <height>563</height>
+    <width>973</width>
+    <height>596</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -21,7 +21,7 @@
     <item>
      <widget class="QTabWidget" name="tabWidget">
       <property name="currentIndex">
-       <number>0</number>
+       <number>2</number>
       </property>
       <widget class="QWidget" name="tab_3">
        <attribute name="title">
@@ -71,11 +71,13 @@
        <attribute name="title">
         <string>Schematic</string>
        </attribute>
+       <layout class="QVBoxLayout" name="verticalLayout_4">
+        <item>
+         <widget class="QGraphicsView" name="schematicPlot"/>
+        </item>
+       </layout>
       </widget>
      </widget>
-    </item>
-    <item>
-     <widget class="QLineEdit" name="blacklistTest"/>
     </item>
    </layout>
   </widget>
@@ -84,7 +86,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>696</width>
+     <width>973</width>
      <height>21</height>
     </rect>
    </property>

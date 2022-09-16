@@ -15,6 +15,7 @@ QWidget *fileWidgetDelegate::createEditor(QWidget *parent,const QStyleOptionView
      fileWidget * w = new fileWidget(parent);
      w->setTextEditable(textEditable);
      w->setFilter(filter);
+     w->setAutoFillBackground(true);
      return w;
 }
 
@@ -45,4 +46,12 @@ void fileWidgetDelegate::setTextEditable(bool editable)
 void fileWidgetDelegate::setFilter(QString filt)
 {
     filter=filt;
+}
+
+
+void fileWidgetDelegate::updateEditorGeometry(QWidget *editor,
+                                           const QStyleOptionViewItem &option,
+                                           const QModelIndex &/* index */) const
+{
+    editor->setGeometry(option.rect);
 }

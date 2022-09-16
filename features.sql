@@ -4,7 +4,7 @@ create table features(
         ,s_ch float
         ,e_ch float
         ,width float
-        ,feature text
+        ,feature text --check feature in ('I(G)','I(MH)')
         ,location text
         ,photo text
         ,section_label text

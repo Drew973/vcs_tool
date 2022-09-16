@@ -27,6 +27,10 @@ public:
     void setTextEditable(bool editable);
     void setFilter(QString filt);
 
+
+    void updateEditorGeometry(QWidget *editor,const QStyleOptionViewItem &option,const QModelIndex &/* index */) const override;
+
+
     bool textEditable=true;
     QString filter="";
 
